@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misi Kurir Kinematika - Gim Fisika GLB & GLBB Kelas X</title>
+    <style>
+        /* =========================================
+           1. DESIGN TOKENS & STYLING MODERN
+           ========================================= */
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-panel: #0b1120;
+            --primary: #38bdf8;
+            --primary-hover: #0284c7;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --radius: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header & Navigasi */
+        header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .brand-icon {
+            background: var(--primary);
+            color: var(--bg-dark);
+            font-weight: 900;
+            padding: 0.4rem 0.7rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
+        }
+
+        .brand h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .brand span {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .badge-status {
+            font-size: 0.78rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 999px;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* Tombol */
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            padding: 0.6rem 1.1rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #09111e;
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: #7dd3fc;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover:not(:disabled) {
+            background: #283548;
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: #09111e;
+        }
+
+        /* Layout Utama */
+        main {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1.25rem;
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+        }
+
+        @media (min-width: 960px) {
+            main {
+                grid-template-columns: 360px 1fr;
+            }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Pemilih Level */
+        .level-tabs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .level-btn {
+            background: var(--bg-panel);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 0.6rem 0.4rem;
+            font-size: 0.82rem;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .level-btn.active {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: var(--primary);
+            color: var(--text-main);
+        }
+
+        .level-btn.completed {
+            border-color: var(--success);
+        }
+
+        /* Info Misi & Rumus */
+        .mission-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .mission-title {
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .mission-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.6rem;
+            background: var(--bg-panel);
+            padding: 0.85rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+
+        .data-item span {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .data-item strong {
+            font-size: 1rem;
+            color: var(--primary);
+        }
+
+        .formula-hint {
+            background: rgba(56, 189, 248, 0.08);
+            border-left: 3px solid var(--primary);
+            padding: 0.75rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.85rem;
+            margin-bottom: 1.25rem;
+        }
+
+        /* Kontrol Input */
+        .control-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            accent-color: var(--primary);
+            height: 6px;
+            cursor: pointer;
+        }
+
+        input[type="number"] {
+            width: 85px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 0.5rem;
+            border-radius: 8px;
+            font-weight: 700;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 0.6rem;
+        }
+
+        /* Area Simulasi & Grafik */
+        .sim-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .canvas-wrapper {
+            position: relative;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+        }
+
+        .telemetry-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            background: var(--bg-panel);
+            padding: 0.85rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .telemetry-box span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: block;
+        }
+
+        .telemetry-box strong {
+            font-size: 1.15rem;
+            font-variant-numeric: tabular-nums;
+            color: var(--text-main);
+        }
+
+        .graphs-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .graphs-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .graph-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.75rem;
+        }
+
+        .graph-title {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+        }
+
+        /* Kotak Umpan Balik Pedagogis */
+        .feedback-box {
+            display: none;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .feedback-box.success {
+            display: block;
+            background: rgba(16, 185, 129, 0.12);
+            border-color: var(--success);
+        }
+
+        .feedback-box.error {
+            display: block;
+            background: rgba(239, 68, 68, 0.12);
+            border-color: var(--danger);
+        }
+
+        .feedback-box h3 {
+            font-size: 1rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .feedback-box p {
+            font-size: 0.88rem;
+            color: var(--text-main);
+        }
+
+        /* Modal Materi Ringkas */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 50;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            max-width: 600px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .modal-content h2 {
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .concept-block {
+            background: var(--bg-panel);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .concept-block h4 {
+            color: var(--accent);
+            margin-bottom: 0.35rem;
+        }
+
+        .concept-block ul {
+            padding-left: 1.2rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER APLIKASI -->
+    <header>
+        <div class="brand">
+            <div class="brand-icon">v(t)</div>
+            <div>
+                <h1>Misi Kurir Kinematika</h1>
+                <span>Fisika Kelas X SMA • Materi GLB & GLBB</span>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <div id="networkStatus" class="badge-status" title="Aplikasi berjalan mandiri tanpa bergantung server">
+                ● Siap Offline & Online
+            </div>
+            <button class="btn-secondary" onclick="toggleModal(true)">📘 Ringkasan Materi</button>
+            <button class="btn-secondary" onclick="downloadOfflineVersion()" title="Unduh file HTML mandiri untuk dibuka tanpa internet">
+                💾 Simpan Offline
+            </button>
+        </div>
+    </header>
+
+    <!-- KONTEN UTAMA -->
+    <main>
+        <!-- PANEL KIRI: KONTROL MISI & INPUT FISIKA -->
+        <section class="card">
+            <div class="level-tabs" id="levelTabs">
+                <button class="level-btn active" data-level="0" onclick="selectLevel(0)">
+                    <strong>Level 1</strong>
+                    <span>GLB Dasar</span>
+                </button>
+                <button class="level-btn" data-level="1" onclick="selectLevel(1)">
+                    <strong>Level 2</strong>
+                    <span>GLBB (+)</span>
+                </button>
+                <button class="level-btn" data-level="2" onclick="selectLevel(2)">
+                    <strong>Level 3</strong>
+                    <span>GLBB (-)</span>
+                </button>
+            </div>
+
+            <div class="mission-tag" id="missionTag">MISI 01 • GERAK LURUS BERATURAN</div>
+            <h2 class="mission-title" id="missionTitle">Pengiriman Drone Medis</h2>
+            <p class="mission-desc" id="missionDesc">
+                Atur kecepatan konstan drone agar menempuh jarak 120 meter dan tiba tepat di zona pendaratan dalam waktu 8 detik.
+            </p>
+
+            <!-- Parameter yang Diketahui -->
+            <div class="data-grid" id="knownDataGrid">
+                <!-- Diisi otomatis oleh JavaScript -->
+            </div>
+
+            <!-- Petunjuk Rumus -->
+            <div class="formula-hint" id="formulaHint">
+                <strong>Petunjuk Konsep:</strong> Pada GLB, percepatan bernilai nol ($a = 0$). Gunakan persamaan <code>s = v × t</code>.
+            </div>
+
+            <!-- Input Pengguna -->
+            <div class="control-group">
+                <div class="control-header">
+                    <label for="paramInput" id="inputLabel">Kecepatan Konstan (v):</label>
+                    <span id="inputUnit" style="color: var(--primary);">m/s</span>
+                </div>
+                <div class="input-row">
+                    <input type="range" id="paramSlider" min="1" max="30" step="0.5" value="10">
+                    <input type="number" id="paramInput" min="1" max="30" step="0.5" value="10">
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-primary" id="btnLaunch" onclick="startSimulation()">🚀 Luncurkan</button>
+                <button class="btn-secondary" id="btnReset" onclick="resetSimulation()">↺ Reset</button>
+            </div>
+
+            <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted);">
+                <span>Skor Tersimpan: <strong id="totalScore" style="color: var(--accent);">0</strong> Poin</span>
+                <span id="progressText">0/3 Misi Selesai</span>
+            </div>
+        </section>
+
+        <!-- PANEL KANAN: SIMULASI VISUAL, TELEMETRI & GRAFIK -->
+        <section class="sim-container">
+            <!-- Kanvas Lintasan Gerak -->
+            <div class="canvas-wrapper">
+                <canvas id="simCanvas" height="240"></canvas>
+            </div>
+
+            <!-- Pembacaan Sensor Real-time -->
+            <div class="telemetry-bar">
+                <div class="telemetry-box">
+                    <span>Waktu Tempuh (t)</span>
+                    <strong id="telTime">0.00 s</strong>
+                </div>
+                <div class="telemetry-box">
+                    <span>Posisi / Jarak (s)</span>
+                    <strong id="telPos">0.00 m</strong>
+                </div>
+                <div class="telemetry-box">
+                    <span>Kecepatan Sesaat (v)</span>
+                    <strong id="telVel">0.00 m/s</strong>
+                </div>
+            </div>
+
+            <!-- Kotak Umpan Balik Pedagogis -->
+            <div id="feedbackBox" class="feedback-box">
+                <h3 id="feedbackTitle">Hasil Evaluasi</h3>
+                <p id="feedbackMessage"></p>
+            </div>
+
+            <!-- Grafik Kinematika Real-time -->
+            <div class="graphs-grid">
+                <div class="graph-card">
+                    <div class="graph-title">📈 Grafik Posisi terhadap Waktu (s - t)</div>
+                    <canvas id="graphPos" height="150"></canvas>
+                </div>
+                <div class="graph-card">
+                    <div class="graph-title">📊 Grafik Kecepatan terhadap Waktu (v - t)</div>
+                    <canvas id="graphVel" height="150"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL RINGKASAN MATERI FISIKA -->
+    <div class="modal-overlay" id="materialModal">
+        <div class="modal-content">
+            <h2>📘 Rangkuman Konsep GLB & GLBB</h2>
+            
+            <div class="concept-block">
+                <h4>1. Gerak Lurus Beraturan (GLB)</h4>
+                <ul>
+                    <li>Lintasan berupa garis lurus dengan <strong>kecepatan tetap (konstan)</strong>.</li>
+                    <li>Percepatan benda bernilai nol (<strong>a = 0</strong>).</li>
+                    <li>Persamaan utama: <strong>s = v × t</strong></li>
+                    <li>Grafik <em>v - t</em> berbentuk garis lurus mendatar; grafik <em>s - t</em> berbentuk garis lurus miring.</li>
+                </ul>
+            </div>
+
+            <div class="concept-block">
+                <h4>2. Gerak Lurus Berubah Beraturan (GLBB)</h4>
+                <ul>
+                    <li>Lintasan lurus dengan <strong>percepatan konstan (a ≠ 0)</strong>, sehingga kecepatan berubah secara teratur tiap detik.</li>
+                    <li><strong>GLBB Dipercepat (a &gt; 0):</strong> Kecepatan bertambah (contoh: kendaraan mulai melaju).</li>
+                    <li><strong>GLBB Diperlambat (a &lt; 0):</strong> Kecepatan berkurang hingga berhenti (contoh: pengereman kendaraan).</li>
+                    <li>Persamaan utama:
+                        <br>• <strong>vₜ = v₀ + a·t</strong>
+                        <br>• <strong>s = v₀·t + ½·a·t²</strong>
+                        <br>• <strong>vₜ² = v₀² + 2·a·s</strong>
+                    </li>
+                </ul>
+            </div>
+
+            <button class="btn-primary" style="width: 100%;" onclick="toggleModal(false)">Tutup & Kembali ke Misi</button>
+        </div>
+    </div>
+
+    <script>
+        /* =========================================
+           2. DATA LEVEL & SKENARIO FISIKA KELAS X
+           ========================================= */
+        const LEVELS = [
+            {
+                id: 0,
+                type: 'GLB',
+                tag: 'MISI 01 • GERAK LURUS BERATURAN (GLB)',
+                title: 'Pengiriman Drone Medis',
+                desc: 'Drone harus terbang mendatar sejauh 120 meter dengan kecepatan konstan agar tiba tepat di zona pendaratan dalam waktu 8 detik.',
+                known: [
+                    { label: 'Jarak Target (s)', value: '120 m' },
+                    { label: 'Target Waktu (t)', value: '8 s' },
+                    { label: 'Percepatan (a)', value: '0 m/s²' },
+                    { label: 'Toleransi Zona', value: '± 2 m' }
+                ],
+                hint: 'Pada GLB, kecepatan tidak berubah. Hitung kecepatan dengan membagi jarak terhadap waktu: v = s / t.',
+                inputLabel: 'Kecepatan Konstan (v):',
+                inputUnit: 'm/s',
+                min: 2, max: 30, step: 0.5, defaultVal: 10,
+                targetDistance: 120,
+                targetTime: 8,
+                v0: 0,
+                maxTrack: 160,
+                vehicleEmoji: '🚁',
+                explainCorrect: 'Tepat sekali! Dengan kecepatan konstan v = 120 m / 8 s = 15 m/s, drone menempuh 120 meter tepat dalam 8 detik. Perhatikan grafik v-t yang mendatar dan grafik s-t yang naik secara linear.',
+                explainWrong: (userVal, actualDist) => `Drone menempuh jarak ${actualDist.toFixed(1)} m dalam 8 detik (target: 120 m). Ingat rumus GLB: v = s / t = 120 / 8 = 15 m/s. Coba sesuaikan kecepatan menjadi 15 m/s!`
+            },
+            {
+                id: 1,
+                type: 'GLBB_ACC',
+                tag: 'MISI 02 • GLBB DIPERCEPAT',
+                title: 'Peluncuran Kereta Logistik Maglev',
+                desc: 'Kereta berangkat dari keadaan diam (v₀ = 0) dan harus mencapai pos pemeriksaan sejauh 100 meter dalam waktu tepat 5 detik.',
+                known: [
+                    { label: 'Kecepatan Awal (v₀)', value: '0 m/s' },
+                    { label: 'Jarak Target (s)', value: '100 m' },
+                    { label: 'Target Waktu (t)', value: '5 s' },
+                    { label: 'Toleransi Zona', value: '± 2.5 m' }
+                ],
+                hint: 'Gunakan rumus jarak GLBB: s = v₀·t + ½·a·t². Karena v₀ = 0, maka a = (2 × s) / t².',
+                inputLabel: 'Percepatan Kereta (a):',
+                inputUnit: 'm/s²',
+                min: 1, max: 15, step: 0.5, defaultVal: 4,
+                targetDistance: 100,
+                targetTime: 5,
+                v0: 0,
+                maxTrack: 140,
+                vehicleEmoji: '🚄',
+                explainCorrect: 'Luar biasa! Percepatan a = (2 × 100) / 5² = 200 / 25 = 8 m/s² membuat kereta mencapai 100 m tepat pada detik ke-5. Perhatikan grafik s-t membentuk kurva parabola melengkung ke atas!',
+                explainWrong: (userVal, actualDist) => `Dengan percepatan ${userVal} m/s², kereta menempuh s = ½ × ${userVal} × 5² = ${actualDist.toFixed(1)} m (target: 100 m). Gunakan persamaan a = 2s / t² = (2 × 100) / 25 = 8 m/s².`
+            },
+            {
+                id: 2,
+                type: 'GLBB_DEC',
+                tag: 'MISI 03 • GLBB DIPERLAMBAT (PENGEREMAN)',
+                title: 'Pengereman Darurat Kapsul Kargo',
+                desc: 'Kapsul melaju dengan kecepatan awal 20 m/s. Di depan terdapat jurang pada jarak 50 meter! Tentukan perlambatan (a negatif) agar kapsul berhenti tepat di titik 50 meter (vₜ = 0).',
+                known: [
+                    { label: 'Kecepatan Awal (v₀)', value: '20 m/s' },
+                    { label: 'Jarak Berhenti (s)', value: '50 m' },
+                    { label: 'Kecepatan Akhir (vₜ)', value: '0 m/s' },
+                    { label: 'Toleransi Zona', value: '± 2 m' }
+                ],
+                hint: 'Gunakan persamaan tanpa waktu: vₜ² = v₀² + 2·a·s. Karena berhenti (vₜ = 0), maka a = -v₀² / (2 × s).',
+                inputLabel: 'Percepatan Rem (a):',
+                inputUnit: 'm/s²',
+                min: -10, max: -1, step: 0.5, defaultVal: -2,
+                targetDistance: 50,
+                targetTime: null, // Berhenti saat v = 0
+                v0: 20,
+                maxTrack: 80,
+                vehicleEmoji: ' capsules',
+                explainCorrect: 'Sempurna! Perlambatan a = -20² / (2 × 50) = -400 / 100 = -4 m/s² menghentikan kapsul tepat di titik 50 m sebelum jurang. Grafik v-t turun lurus hingga menyentuh sumbu nol.',
+                explainWrong: (userVal, actualDist) => `Dengan perlambatan ${userVal} m/s², kapsul baru berhenti setelah menempuh jarak s = -v₀² / (2a) = -400 / (2 × ${userVal}) = ${actualDist.toFixed(1)} m. Agar berhenti tepat di 50 m, gunakan a = -400 / 100 = -4 m/s².`
+            }
+        ];
+
+        /* =========================================
+           3. STATE APLIKASI & PENYIMPANAN OFFLINE
+           ========================================= */
+        let currentLevelIdx = 0;
+        let isRunning = false;
+        let animFrameId = null;
+        let lastTimestamp = 0;
+
+        // Variabel Fisika Simulasi
+        let simTime = 0;
+        let simPos = 0;
+        let simVel = 0;
+        let simAcc = 0;
+        let historyData = []; // Menyimpan titik {t, s, v} untuk grafik
+
+        // Muat progres dari localStorage (Offline Storage)
+        let savedState = JSON.parse(localStorage.getItem('kinematika_save_v1')) || {
+            completedLevels: [],
+            score: 0
+        };
+
+        // Referensi DOM
+        const simCanvas = document.getElementById('simCanvas');
+        const simCtx = simCanvas.getContext('2d');
+        const graphPosCanvas = document.getElementById('graphPos');
+        const posCtx = graphPosCanvas.getContext('2d');
+        const graphVelCanvas = document.getElementById('graphVel');
+        const velCtx = graphVelCanvas.getContext('2d');
+
+        const paramSlider = document.getElementById('paramSlider');
+        const paramInput = document.getElementById('paramInput');
+
+        /* =========================================
+           4. INISIALISASI & RESPONSIVITAS KANVAS
+           ========================================= */
+        function resizeCanvases() {
+            simCanvas.width = simCanvas.parentElement.clientWidth;
+            graphPosCanvas.width = graphPosCanvas.parentElement.clientWidth - 24;
+            graphVelCanvas.width = graphVelCanvas.parentElement.clientWidth - 24;
+            drawScene();
+            drawGraphs();
+        }
+
+        window.addEventListener('resize', resizeCanvases);
+
+        // Sinkronisasi Slider dan Input Angka
+        paramSlider.addEventListener('input', (e) => {
+            paramInput.value = e.target.value;
+        });
+
+        paramInput.addEventListener('input', (e) => {
+            let val = parseFloat(e.target.value);
+            if (!isNaN(val)) {
+                paramSlider.value = val;
+            }
+        });
+
+        // Pantau status koneksi internet secara dinamis
+        function updateNetworkBadge() {
+            const badge = document.getElementById('networkStatus');
+            if (navigator.onLine) {
+                badge.innerHTML = '● Online (Tersimpan Lokal)';
+                badge.style.color = '#10b981';
+            } else {
+                badge.innerHTML = '● Mode Offline Aktif';
+                badge.style.color = '#f59e0b';
+            }
+        }
+        window.addEventListener('online', updateNetworkBadge);
+        window.addEventListener('offline', updateNetworkBadge);
+
+        /* =========================================
+           5. MANAJEMEN LEVEL & UI
+           ========================================= */
+        function selectLevel(idx) {
+            if (isRunning) cancelAnimationFrame(animFrameId);
+            isRunning = false;
+            currentLevelIdx = idx;
+            const lvl = LEVELS[idx];
+
+            // Update tab aktif
+            document.querySelectorAll('.level-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === idx);
+                btn.classList.toggle('completed', savedState.completedLevels.includes(i));
+            });
+
+            // Update teks misi
+            document.getElementById('missionTag').textContent = lvl.tag;
+            document.getElementById('missionTitle').textContent = lvl.title;
+            document.getElementById('missionDesc').textContent = lvl.desc;
+            document.getElementById('formulaHint').innerHTML = `<strong>Petunjuk Konsep:</strong> ${lvl.hint}`;
+
+            // Render data diketahui
+            const grid = document.getElementById('knownDataGrid');
+            grid.innerHTML = lvl.known.map(item => `
+                <div class="data-item">
+                    <span>${item.label}</span>
+                    <strong>${item.value}</strong>
+                </div>
+            `).join('');
+
+            // Konfigurasi kontrol input
+            document.getElementById('inputLabel').textContent = lvl.inputLabel;
+            document.getElementById('inputUnit').textContent = lvl.inputUnit;
+            paramSlider.min = lvl.min;
+            paramSlider.max = lvl.max;
+            paramSlider.step = lvl.step;
+            paramSlider.value = lvl.defaultVal;
+
+            paramInput.min = lvl.min;
+            paramInput.max = lvl.max;
+            paramInput.step = lvl.step;
+            paramInput.value = lvl.defaultVal;
+
+            resetSimulation();
+            updateScoreUI();
+        }
+
+        function updateScoreUI() {
+            document.getElementById('totalScore').textContent = savedState.score;
+            document.getElementById('progressText').textContent = `${savedState.completedLevels.length}/3 Misi Selesai`;
+        }
+
+        function resetSimulation() {
+            if (animFrameId) cancelAnimationFrame(animFrameId);
+            isRunning = false;
+            const lvl = LEVELS[currentLevelIdx];
+
+            simTime = 0;
+            simPos = 0;
+            simVel = lvl.v0;
+            simAcc = 0;
+            historyData = [{ t: 0, s: 0, v: lvl.v0 }];
+
+            document.getElementById('btnLaunch').disabled = false;
+            paramSlider.disabled = false;
+            paramInput.disabled = false;
+            document.getElementById('feedbackBox').className = 'feedback-box';
+
+            updateTelemetry();
+            drawScene();
+            drawGraphs();
+        }
+
+        /* =========================================
+           6. MESIN FISIKA & LOOP SIMULASI
+           ========================================= */
+        function startSimulation() {
+            resetSimulation();
+            const lvl = LEVELS[currentLevelIdx];
+            const userVal = parseFloat(paramInput.value);
+
+            if (isNaN(userVal)) return;
+
+            if (lvl.type === 'GLB') {
+                simVel = userVal;
+                simAcc = 0;
+            } else {
+                simVel = lvl.v0;
+                simAcc = userVal;
+            }
+
+            isRunning = true;
+            document.getElementById('btnLaunch').disabled = true;
+            paramSlider.disabled = true;
+            paramInput.disabled = true;
+            lastTimestamp = performance.now();
+
+            animFrameId = requestAnimationFrame(simulationLoop);
+        }
+
+        function simulationLoop(timestamp) {
+            if (!isRunning) return;
+
+            // Delta waktu dalam detik (dibatasi agar stabil jika tab berpindah)
+            const dt = Math.min((timestamp - lastTimestamp) / 1000, 0.05);
+            lastTimestamp = timestamp;
+
+            const lvl = LEVELS[currentLevelIdx];
+            simTime += dt;
+
+            // Persamaan Kinematika Eksak:
+            // s(t) = v0 * t + 0.5 * a * t^2
+            // v(t) = v0 + a * t
+            const initialV = (lvl.type === 'GLB') ? parseFloat(paramInput.value) : lvl.v0;
+            simPos = (initialV * simTime) + (0.5 * simAcc * simTime * simTime);
+            simVel = initialV + (simAcc * simTime);
+
+            // Kondisi berhenti simulasi
+            let finished = false;
+
+            if (lvl.type === 'GLBB_DEC') {
+                // Berhenti saat kecepatan mencapai <= 0 atau melewati batas lintasan
+                if (simVel <= 0) {
+                    simVel = 0;
+                    // Hitung waktu & jarak berhenti eksak secara analitik
+                    const exactStopTime = -initialV / simAcc;
+                    simTime = exactStopTime;
+                    simPos = (initialV * exactStopTime) + (0.5 * simAcc * exactStopTime * exactStopTime);
+                    finished = true;
+                } else if (simPos >= lvl.maxTrack) {
+                    finished = true;
+                }
+            } else {
+                // Misi berbasis target waktu (Level 1 & Level 2)
+                if (simTime >= lvl.targetTime) {
+                    simTime = lvl.targetTime;
+                    simPos = (initialV * simTime) + (0.5 * simAcc * simTime * simTime);
+                    simVel = initialV + (simAcc * simTime);
+                    finished = true;
+                }
+            }
+
+            historyData.push({ t: simTime, s: simPos, v: simVel });
+            updateTelemetry();
+            drawScene();
+            drawGraphs();
+
+            if (finished) {
+                isRunning = false;
+                document.getElementById('btnLaunch').disabled = false;
+                paramSlider.disabled = false;
+                paramInput.disabled = false;
+                evaluateResult();
+            } else {
+                animFrameId = requestAnimationFrame(simulationLoop);
+            }
+        }
+
+        function updateTelemetry() {
+            document.getElementById('telTime').textContent = `${simTime.toFixed(2)} s`;
+            document.getElementById('telPos').textContent = `${simPos.toFixed(2)} m`;
+            document.getElementById('telVel').textContent = `${simVel.toFixed(2)} m/s`;
+        }
+
+        /* =========================================
+           7. EVALUASI & UMPAN BALIK PEDAGOGIS
+           ========================================= */
+        function evaluateResult() {
+            const lvl = LEVELS[currentLevelIdx];
+            const userVal = parseFloat(paramInput.value);
+            const errorMargin = Math.abs(simPos - lvl.targetDistance);
+            const isSuccess = errorMargin <= 2.5;
+
+            const fbBox = document.getElementById('feedbackBox');
+            const fbTitle = document.getElementById('feedbackTitle');
+            const fbMsg = document.getElementById('feedbackMessage');
+
+            if (isSuccess) {
+                fbBox.className = 'feedback-box success';
+                fbTitle.textContent = '✅ Misi Berhasil! Parameter Fisika Akurat';
+                fbMsg.textContent = lvl.explainCorrect;
+
+                if (!savedState.completedLevels.includes(currentLevelIdx)) {
+                    savedState.completedLevels.push(currentLevelIdx);
+                    savedState.score += 100;
+                    localStorage.setItem('kinematika_save_v1', JSON.stringify(savedState));
+                    selectLevel(currentLevelIdx); // Perbarui tanda centang tab
+                    // Tampilkan ulang feedback box setelah refresh UI tab
+                    fbBox.className = 'feedback-box success';
+                }
+            } else {
+                fbBox.className = 'feedback-box error';
+                fbTitle.textContent = '❌ Misi Belum Tepat — Mari Analisis Rumusnya!';
+                fbMsg.textContent = lvl.explainWrong(userVal, simPos);
+            }
+        }
+
+        /* =========================================
+           8. RENDER VISUAL LINTASAN & GRAFIK
+           ========================================= */
+        function drawScene() {
+            const w = simCanvas.width;
+            const h = simCanvas.height;
+            const lvl = LEVELS[currentLevelIdx];
+
+            simCtx.clearRect(0, 0, w, h);
+
+            // Latar langit & grid jarak
+            simCtx.fillStyle = '#0b1120';
+            simCtx.fillRect(0, 0, w, h);
+
+            const marginX = 45;
+            const trackWidth = w - (marginX * 2);
+            const groundY = h - 55;
+
+            // Skala meter ke piksel
+            const toPx = (meters) => marginX + (meters / lvl.maxTrack) * trackWidth;
+
+            // Garis grid tiap 20 meter
+            simCtx.strokeStyle = '#1e293b';
+            simCtx.fillStyle = '#64748b';
+            simCtx.font = '11px sans-serif';
+            simCtx.textAlign = 'center';
+
+            for (let m = 0; m <= lvl.maxTrack; m += 20) {
+                const x = toPx(m);
+                simCtx.beginPath();
+                simCtx.moveTo(x, 25);
+                simCtx.lineTo(x, groundY);
+                simCtx.stroke();
+                simCtx.fillText(`${m}m`, x, groundY + 18);
+            }
+
+            // Gambar Lintasan Utama
+            simCtx.strokeStyle = '#475569';
+            simCtx.lineWidth = 4;
+            simCtx.beginPath();
+            simCtx.moveTo(marginX, groundY);
+            simCtx.lineTo(w - marginX, groundY);
+            simCtx.stroke();
+            simCtx.lineWidth = 1;
+
+            // Gambar Zona Target
+            const targetX = toPx(lvl.targetDistance);
+            simCtx.fillStyle = 'rgba(16, 185, 129, 0.22)';
+            simCtx.fillRect(targetX - 16, groundY - 45, 32, 45);
+            simCtx.strokeStyle = '#10b981';
+            simCtx.strokeRect(targetX - 16, groundY - 45, 32, 45);
+
+            simCtx.fillStyle = '#10b981';
+            simCtx.font = 'bold 11px sans-serif';
+            simCtx.fillText(`TARGET (${lvl.targetDistance}m)`, targetX, groundY - 52);
+
+            // Jika Level 3, gambar tanda bahaya jurang setelah 55m
+            if (lvl.type === 'GLBB_DEC') {
+                const cliffX = toPx(54);
+                simCtx.fillStyle = 'rgba(239, 68, 68, 0.25)';
+                simCtx.fillRect(cliffX, groundY, w - marginX - cliffX, 35);
+                simCtx.fillStyle = '#ef4444';
+                simCtx.fillText('⚠️ ZONA JURANG', cliffX + 55, groundY + 25);
+            }
+
+            // Gambar Kendaraan
+            const clampedPos = Math.min(simPos, lvl.maxTrack);
+            const vehX = toPx(clampedPos);
+            const vehY = (lvl.type === 'GLB') ? groundY - 35 : groundY - 18;
+
+            // Badan kendaraan vektor modern
+            simCtx.fillStyle = '#38bdf8';
+            simCtx.beginPath();
+            simCtx.roundRect(vehX - 20, vehY - 12, 40, 22, 6);
+            simCtx.fill();
+
+            // Aksen jendela
+            simCtx.fillStyle = '#0f172a';
+            simCtx.fillRect(vehX + 2, vehY - 8, 12, 8);
+
+            // Roda (jika darat)
+            if (lvl.type !== 'GLB') {
+                simCtx.fillStyle = '#f59e0b';
+                simCtx.beginPath();
+                simCtx.arc(vehX - 11, vehY + 12, 5, 0, Math.PI * 2);
+                simCtx.arc(vehX + 11, vehY + 12, 5, 0, Math.PI * 2);
+                simCtx.fill();
+            }
+
+            // Label posisi di atas kendaraan
+            simCtx.fillStyle = '#f8fafc';
+            simCtx.font = 'bold 11px sans-serif';
+            simCtx.fillText(`${simPos.toFixed(1)} m`, vehX, vehY - 20);
+        }
+
+        function drawGraphs() {
+            const lvl = LEVELS[currentLevelIdx];
+            const maxT = lvl.targetTime ? lvl.targetTime : 8;
+            const maxS = lvl.maxTrack;
+            const maxV = 35;
+
+            renderSingleGraph(posCtx, graphPosCanvas, historyData, 's', maxT, maxS, '#38bdf8', 's (m)');
+            renderSingleGraph(velCtx, graphVelCanvas, historyData, 'v', maxT, maxV, '#f59e0b', 'v (m/s)');
+        }
+
+        function renderSingleGraph(ctx, canvas, data, key, maxX, maxY, color, yLabel) {
+            const w = canvas.width;
+            const h = canvas.height;
+            const pad = 28;
+
+            ctx.clearRect(0, 0, w, h);
+
+            // Sumbu X dan Y
+            ctx.strokeStyle = '#334155';
+            ctx.beginPath();
+            ctx.moveTo(pad, 10);
+            ctx.lineTo(pad, h - pad);
+            ctx.lineTo(w - 10, h - pad);
+            ctx.stroke();
+
+            // Label sumbu
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '10px sans-serif';
+            ctx.fillText(yLabel, 4, 15);
+            ctx.fillText('t (s)', w - 25, h - 8);
+
+            if (data.length < 2) return;
+
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+
+            data.forEach((pt, idx) => {
+                const x = pad + (Math.min(pt.t, maxX) / maxX) * (w - pad - 15);
+                const yVal = Math.max(0, Math.min(pt[key], maxY));
+                const y = (h - pad) - (yVal / maxY) * (h - pad - 15);
+
+                if (idx === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+
+            ctx.stroke();
+            ctx.lineWidth = 1;
+        }
+
+        /* =========================================
+           9. FITUR MODAL & UNDUH OFFLINE MANDIRI
+           ========================================= */
+        function toggleModal(show) {
+            document.getElementById('materialModal').classList.toggle('open', show);
+        }
+
+        function downloadOfflineVersion() {
+            const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Misi_Kurir_Kinematika_GLB_GLBB.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Jalankan saat halaman dimuat
+        window.onload = function() {
+            updateNetworkBadge();
+            selectLevel(0);
+            resizeCanvases();
+        };
+    </script>
+</body>
+</html>
